@@ -47,9 +47,10 @@ def elem_to_dict(element):
       if len(ans) > 0:
         raise Exception("Content and children found at the same time!")
       ans = ents
-
+      
     return ans
 
 def parse_xml(source, tag, **kwargs):
   for ev, elem in lxml.etree.iterparse(source, tag=tag, **kwargs):
     yield elem_to_dict(elem)
+    elem.clear()
