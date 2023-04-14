@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from xml_parse_elems import parse_xml
+from jmdict_parsing.xml_parse_elems import parse_xml
 
 from japverbconj.constants.enumerated_types import VerbClass
 
