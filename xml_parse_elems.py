@@ -63,14 +63,14 @@ def __get_handler(elementName, elementCallback, stripValues = True):
       parent = self.stack[-1]
       if name not in parent:
         # Try to avoid creating unnecessary lists. Assume we will find this name-tagged inner element only once.
-        parent[name] = el
+        parent[name] = (el, )
       
       else:
-        # We were wrong, so put keep the elements in a list instead
+        # We were wrong, so put the elements in a list instead
         if isinstance(parent[name], list):
           parent[name].append(el)
         else:
-          parent[name] = [ parent[name], el ]
+          parent[name] = [ parent[name][0], el ]
 
     @classmethod
     def characters(self, chars):
