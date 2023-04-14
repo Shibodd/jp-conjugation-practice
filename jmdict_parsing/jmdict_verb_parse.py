@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from jmdict_parsing.xml_parse_elems import parse_xml
-
+import itertools
 from japverbconj.constants.enumerated_types import VerbClass
 
 @dataclass
@@ -8,6 +8,7 @@ class Verb:
   verbClass: VerbClass
   kanji: str
   reading: str
+  meaning: str
 
 def __make_verb_map():
   ICHIDAN = [ "v1", "v1-s" ]
@@ -63,8 +64,13 @@ def __parse_verbs(verbs):
       continue
     reading = reading['reb'][0]
 
+    meaning = "; ".join(itertools.islice(
+      itertools.chain.from_iterable(sense.get('gloss') for sense in verb.get('sense')),
+      5
+    ))
+    
     verb_class = VERB_MAP[ [x for x in verb['sense'][0]['pos'] if x in VERB_MAP] [0] ]
-    yield Verb(verb_class, kanji, reading)
+    yield Verb(verb_class, kanji, reading, meaning)
 
 def get_jmdic_verbs(filename):
   return __parse_verbs(__filter_verbs(parse_xml(filename, 'entry', resolve_entities = False)))
