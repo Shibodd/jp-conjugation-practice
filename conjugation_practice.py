@@ -1,25 +1,25 @@
 if __name__ == "__main__":
-  from japverbconj.verb_form_gen import generate_japanese_verb_by_str
-  from japverbconj.constants.enumerated_types import VerbClass, BaseForm, Polarity, Tense
+  import japyconjugator.verbs as japyverb
+  
   from jmdict_parsing.jmdict_verb_parse import get_jmdic_verbs
   import random
 
   FORM = {
-    BaseForm.PLAIN: "Plain",
-    BaseForm.POLITE: "Polite",
-    BaseForm.TE: "Te-form"
+    japyverb.VerbForm.Plain: "Plain",
+    japyverb.VerbForm.PlainPast: "Plain past",
+    japyverb.VerbForm.Polite: "Polite",
+    japyverb.VerbForm.PolitePast: "Polite past",
+    japyverb.VerbForm.Te: "Te-form"
   }
+
   POLARITY = {
-    Polarity.POSITIVE: "Positive",
-    Polarity.NEGATIVE: "Negative"
+    japyverb.Polarity.Affirmative: "Affirmative",
+    japyverb.Polarity.Negative: "Negative"
   }
-  TENSE = { 
-    Tense.NONPAST: "Present",
-    Tense.PAST: "Past"
-  }
+
   VERB_CLASS = {
-    VerbClass.ICHIDAN: "Ichidan",
-    VerbClass.GODAN: "Godan"
+    japyverb.VerbClass.Ichidan: "Ichidan",
+    japyverb.VerbClass.Godan: "Godan"
   }
 
   def filter_short_verbs(verbs):
@@ -63,30 +63,11 @@ if __name__ == "__main__":
     
     form = random.choice(list(FORM.keys()))
     polarity = random.choice(list(POLARITY.keys()))
-    tense = None if form == BaseForm.TE else random.choice(list(TENSE.keys()))
 
-    correct_kanji = generate_japanese_verb_by_str(
-      verb.kanji,
-      verb.verbClass.value,
-      form.value,
-      None if tense is None else tense.value,
-      polarity.value
-    )
-    correct_reading = generate_japanese_verb_by_str(
-      verb.reading,
-      verb.verbClass.value,
-      form.value,
-      None if tense is None else tense.value,
-      polarity.value
-    )
-    
-    print("")
-    ans = None
-    print("Tense: ", tense)
-    if form != BaseForm.TE:
-      ans = input(f"Conjugate into {FORM[form]}, {TENSE[tense]}, {POLARITY[polarity]}:　")
-    else:
-      ans = input(f"Conjugate into {FORM[form]}, {POLARITY[polarity]}: ")
+    correct_kanji = japyverb.conjugate_verb(verb.kanji, verb.verbClass, form, polarity)
+    correct_reading = japyverb.conjugate_verb(verb.reading, verb.verbClass, form, polarity)
+
+    ans = input(f"\nConjugate into {FORM[form]}, {POLARITY[polarity]}: ")
     
     if ans != correct_kanji and ans != correct_reading:
       print("Nope! The correct conjugation was ", correct_kanji, correct_reading)

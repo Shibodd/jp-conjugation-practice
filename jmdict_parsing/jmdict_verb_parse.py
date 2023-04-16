@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from jmdict_parsing.xml_parse_elems import parse_xml
 import itertools
-from japverbconj.constants.enumerated_types import VerbClass
+from japyconjugator.verbs import VerbClass
 
 @dataclass
 class Verb:
@@ -16,9 +16,9 @@ def __make_verb_map():
   
   verb_map = {}
   for verb in ICHIDAN:
-    verb_map[verb] = VerbClass.ICHIDAN
+    verb_map[verb] = VerbClass.Ichidan
   for verb in GODAN:
-    verb_map[verb] = VerbClass.GODAN
+    verb_map[verb] = VerbClass.Godan
 
   return verb_map
 
