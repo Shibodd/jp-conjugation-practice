@@ -64,8 +64,8 @@ if __name__ == "__main__":
     form = random.choice(list(FORM.keys()))
     polarity = random.choice(list(POLARITY.keys()))
 
-    correct_kanji = japyverb.conjugate_verb(verb.kanji, verb.verbClass, form, polarity)
-    correct_reading = japyverb.conjugate_verb(verb.reading, verb.verbClass, form, polarity)
+    correct_kanji = japyverb.conjugate(verb.kanji, verb.verbClass, form, polarity)
+    correct_reading = japyverb.conjugate(verb.reading, verb.verbClass, form, polarity)
 
     ans = input(f"\nConjugate into {FORM[form]}, {POLARITY[polarity]}: ")
     
